@@ -9,7 +9,6 @@ const PageNotFound = () => {
         <span>Page Not Found</span>
         <button className=" p-2 px-3 rounded-md font-semibold hover:bg-slate-100 mt-10" onClick={()=>navigate("/")}>← Back to Home</button>
       </div>
-      
     </div>
   )
 }
