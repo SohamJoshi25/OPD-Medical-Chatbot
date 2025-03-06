@@ -1,8 +1,9 @@
 import axios from "axios"
 import { Message } from "../types"
 import { GROQ_API_KEY } from "../../../data/constants";
+import { generatePDF } from "./PdfGen";
 
-export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) => {
+export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) : Promise<string> => {
     try {
 
         const body = {
@@ -11,16 +12,13 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
                 content:userPrompt
             }],
             "temperature": 0.4,
-            "top_p": 0.9,
+            "top_p": 0.7,
             "stream": false,
-            "stop": [
-                "###"
-            ],
-            "frequency_penalty": 0.3,
-            "presence_penalty": 0.4,
-            "user": "postman_test",
+            "frequency_penalty": 0.8,
+            "presence_penalty": 0.3,
             "model": "llama-3.3-70b-versatile"
         }
+        //"llama-3.2-3b-preview"
 
         setMessages(p => [...p ,{
             role:"user",
@@ -40,17 +38,31 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
             }
         );
 
-        const assistant_response = response.data.choices[0].message.content as string;
-        setMessages((p) => {
-            return [...p.slice(0, -1), {
-                role:"assistant",
-                content:assistant_response
-            }];
-          });
+        let assistant_response = response.data.choices[0].message.content as string;
+        assistant_response = assistant_response.replace("<|eot_id|>",".")
+        assistant_response = assistant_response.replace("?","?.")
+       
+        
+        if(assistant_response.trim().startsWith("JSON")){
+            const json_string = assistant_response.split("JSON")[1].trim();
+            const details = JSON.parse(json_string);
+            window.alert("Appointment Booked")
+            generatePDF(details)
+        }else{
+            setMessages((p) => {
+                return [...p.slice(0, -1), {
+                    role:"assistant",
+                    content:assistant_response
+                }];
+              });
+            return assistant_response;
+        }
+
           
         //pass
     } catch (error : unknown) {
         console.error(error)
+        return ""
     }
 }
 
