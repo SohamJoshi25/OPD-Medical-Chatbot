@@ -5,13 +5,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/home/Home.tsx'
 import PageNotFound from './pages/not-found/NotFoundPage.tsx';
 import Chat from './pages/chatbot/Chat.tsx';
+import ChatV1 from "./pages/chatbot-chat/Chat.tsx"
 
 const App = () => {
   return (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat" element={<ChatV1 />} />
+          <Route path="/voice" element={<Chat />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
