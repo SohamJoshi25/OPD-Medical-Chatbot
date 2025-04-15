@@ -1,7 +1,6 @@
 import axios from "axios"
 import { Message } from "../types/MessageTypes"
 import { GROQ_API_KEY } from "../data/constants";
-import { generatePDF } from "./PdfGen";
 
 export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) : Promise<[string,boolean]>  => {
     try {
@@ -37,6 +36,7 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
                 },
             }
         );
+        
 
         let assistant_response = response.data.choices[0].message.content as string;
         assistant_response = assistant_response.replace("<|eot_id|>",".")

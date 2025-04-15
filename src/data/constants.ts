@@ -1,1 +1,1 @@
-export const GROQ_API_KEY = process.env.VITE_GROQ_API_KEY;
+export const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
