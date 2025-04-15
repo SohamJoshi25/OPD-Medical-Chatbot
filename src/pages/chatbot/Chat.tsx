@@ -7,6 +7,8 @@ import { groq_competition_input } from "../../utils/groq"
 //Custom Hooks
 import useTextToSpeech from "../../hooks/speech/useTextToSpeech";
 import useSpeechToText from "../../hooks/speech/useSpeechToText";
+import { useResponseContext } from "../../contexts/responseContext";
+import { useNavigate } from "react-router-dom";
 
 
 const defaultMessages: Message[] = [
@@ -19,6 +21,10 @@ const defaultMessages: Message[] = [
 
 const Chat = () => {
 
+  const navigate = useNavigate();
+
+  const {setResponse} = useResponseContext()
+
   const [inputText, setInputText] = useState<string>("")
   
   const { startListening, stopListening, isListening } = useSpeechToText(setInputText);
@@ -29,17 +35,19 @@ const Chat = () => {
 
   const chatsRef = useRef<HTMLInputElement>(null)
 
-  const handleUserText = (e:React.ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value)
-  }
+  // const handleUserText = (e:React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputText(e.target.value)
+  // }
 
-  const handleUserEnter = async (e:React.KeyboardEvent<HTMLInputElement>) => {
-    if(e.key.toLowerCase() == "enter"){
+  // const handleUserEnter = async (e:React.KeyboardEvent<HTMLInputElement>) => {
+  //   if(e.key.toLowerCase() == "enter"){
       
-      await groq_comp_call()
-      setInputText("")
-    }
-  }
+  //     await groq_comp_call()
+  //     setInputText("")
+
+      
+  //   }
+  // }
 
   const handleListenButton = () => {
     if(isListening || isSpeaking) {
@@ -52,7 +60,12 @@ const Chat = () => {
   }
 
   const groq_comp_call =async () => {
-    const message = await groq_competition_input(messages,setMessages,inputText);
+    const [message,isEnd] = await groq_competition_input(messages,setMessages,inputText);
+
+    if(isEnd){
+        setResponse(message)
+        navigate("/response")
+    }
     speak(message)
     chatsRef.current?.lastElementChild?.scrollIntoView({ behavior: "smooth" })
   }
@@ -72,7 +85,7 @@ const Chat = () => {
 
   return (
     <div className="mx-20 font-mono">
-      <span className="flex justify-left mt-10 text-5xl ">OPD MediAssist</span>
+      <span className="flex justify-left mt-10 text-5xl " style={{fontFamily:"fantasy"}}>OPD MediAssist</span>
       <div className="pt-4 flex flex-col justify-around h-[87vh]">
 
         {messages && messages.filter((o) => o.role !== "system").length !== 0 && <div className="mb-3 overflow-y-scroll h-full hide-scrollbar" ref={chatsRef}>

@@ -2,7 +2,7 @@ import axios from "axios"
 import { Message } from "../../../types/MessageTypes";
 import { GROQ_API_KEY } from "../../../data/constants";
 
-export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) : Promise<string> => {
+export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) : Promise<[string,boolean]> => {
     try {
 
         const body = {
@@ -46,7 +46,7 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
             const json_string = assistant_response.split("JSON")[1].trim();
             const details = JSON.parse(json_string);
             details.id = Math.floor(Math.random()*10000000);
-            return JSON.stringify(details)
+            return [JSON.stringify(details),true]
         }else{
             setMessages((p) => {
                 return [...p.slice(0, -1), {
@@ -54,14 +54,14 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
                     content:assistant_response
                 }];
               });
-            return "";
+            return [assistant_response,false];
         }
 
           
         //pass
     } catch (error : unknown) {
         console.error(error)
-        return ""
+        return ["",false]
     }
 }
 

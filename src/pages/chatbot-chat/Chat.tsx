@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Message } from "../../types/MessageTypes"
-import { groq_competition_input } from "./utils/groq"
+import { groq_competition_input } from "../../utils/groq"
 import { useResponseContext } from "../../contexts/responseContext"
 import { useNavigate } from "react-router-dom"
 
@@ -29,9 +29,9 @@ const Chat = () => {
 
   const handleUserEnter = async (e:React.KeyboardEvent<HTMLInputElement>) => {
     if(e.key.toLowerCase() == "enter"){
-      const slip_response = await groq_competition_input(messages,setMessages,inputText);
+      const [slip_response,isEnd] = await groq_competition_input(messages,setMessages,inputText);
       setInputText("")
-      if(slip_response){
+      if(isEnd){
         setResponse(slip_response)
         navigate("/response")
       }
@@ -40,7 +40,7 @@ const Chat = () => {
 
   return (
     <div className="mx-20 font-mono">
-      <span className="flex justify-left mt-10 text-5xl ">Chats</span>
+      <span className="flex justify-left mt-10 text-5xl " style={{fontFamily:"fantasy"}}>OPD MediAssist</span>
       <div className="pt-4 flex flex-col justify-around h-[87vh]">
 
         {messages && messages.filter((o) => o.role !== "system").length !== 0 && <div className="mb-3 overflow-y-scroll h-full hide-scrollbar ">
