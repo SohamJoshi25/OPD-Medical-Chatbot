@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react"
-import { Message } from "./types"
+import { Message } from "../../types/MessageTypes"
 
 //Utils
-import { groq_competition_input } from "./utils/groq"
+import { groq_competition_input } from "../../utils/groq"
 
 //Custom Hooks
 import useTextToSpeech from "../../hooks/speech/useTextToSpeech";

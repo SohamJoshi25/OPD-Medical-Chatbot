@@ -1,9 +1,9 @@
 import axios from "axios"
-import { Message } from "../types"
-import { GROQ_API_KEY } from "../../../data/constants";
+import { Message } from "../types/MessageTypes"
+import { GROQ_API_KEY } from "../data/constants";
 import { generatePDF } from "./PdfGen";
 
-export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) : Promise<string> => {
+export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) : Promise<string | any>  => {
     try {
 
         const body = {

@@ -1,6 +1,6 @@
 
 import { jsPDF } from 'jspdf';
-import { PatientData } from '../../../types/PatientData';
+import { PatientData } from "../types/PatientData";
 
 export const generatePDF = (patientData:PatientData) => {
   const doc = new jsPDF();
@@ -9,6 +9,7 @@ export const generatePDF = (patientData:PatientData) => {
   doc.text('Patient Details Slip', 20, 20);
 
   doc.setFontSize(12);
+  doc.text(`Patient Record ID: ${patientData.id}`, 20, 40);
   doc.text(`Full Name: ${patientData.FullName}`, 20, 40);
   doc.text(`Age: ${patientData.Age}`, 20, 50);
   doc.text(`Gender: ${patientData.Gender}`, 20, 60);

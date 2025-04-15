@@ -1,4 +1,5 @@
 export interface PatientData {
+    id:number;
     FullName: string;
     Age: number;
     Gender: string;

@@ -1,6 +1,8 @@
 import { useState } from "react"
-import { Message } from "./types"
+import { Message } from "../../types/MessageTypes"
 import { groq_competition_input } from "./utils/groq"
+import { useResponseContext } from "../../contexts/responseContext"
+import { useNavigate } from "react-router-dom"
 
 
 const defaultMessages: Message[] = [
@@ -13,6 +15,10 @@ const defaultMessages: Message[] = [
 
 const Chat = () => {
 
+  const navigate  = useNavigate();
+
+  const {setResponse} = useResponseContext()
+
   const [inputText, setInputText] = useState<string>("")
   //const [isThinking, setIsThinking] = useState(false);
   const [messages, setMessages] = useState<Message[]>(defaultMessages)
@@ -21,10 +27,14 @@ const Chat = () => {
     setInputText(e.target.value)
   }
 
-  const handleUserEnter = (e:React.KeyboardEvent<HTMLInputElement>) => {
+  const handleUserEnter = async (e:React.KeyboardEvent<HTMLInputElement>) => {
     if(e.key.toLowerCase() == "enter"){
-      groq_competition_input(messages,setMessages,inputText);
+      const slip_response = await groq_competition_input(messages,setMessages,inputText);
       setInputText("")
+      if(slip_response){
+        setResponse(slip_response)
+        navigate("/response")
+      }
     }
   }
 
