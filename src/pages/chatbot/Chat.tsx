@@ -83,29 +83,64 @@ const Chat = () => {
     }
   },[isSpeaking])
 
-  return (
-    <div className="mx-20 font-mono">
-      <span className="flex justify-left mt-10 text-5xl " style={{fontFamily:"fantasy"}}>OPD MediAssist</span>
-      <div className="pt-4 flex flex-col justify-around h-[87vh]">
+return (
+  <div className="mx-4 md:mx-20 font-mono h-[90vh] flex flex-col">
+  
+    <h1
+      className="text-4xl md:text-5xl text-slate-800 font-semibold mt-10 mb-6"
+      style={{ fontFamily: "fantasy" }}
+    >
+      OPD MediAssist
+    </h1>
 
-        {messages && messages.filter((o) => o.role !== "system").length !== 0 && <div className="mb-3 overflow-y-scroll h-full hide-scrollbar" ref={chatsRef}>
-          {messages.filter((o) => o.role !== "system").map((message, idx) => {
-            return <div key={idx} className="my-3 p-2 px-5 w-full bg-slate-100 rounded-sm">
-              <div className={`${message.role === "assistant" ? "text-left" : "text-right"}`}>{message.content}</div>
-            </div>
-          })}
-        </div>}
+    
+    <div className="flex-grow flex flex-col justify-between">
+      {messages && messages.filter((o) => o.role !== "system").length !== 0 && (
+        <div
+          className="mb-3 overflow-y-auto h-full hide-scrollbar px-2 space-y-4"
+          ref={chatsRef}
+        >
+          {messages
+            .filter((o) => o.role !== "system")
+            .map((message, idx) => (
+              <div
+                key={idx}
+                className={`w-fit max-w-[80%] px-4 py-2 rounded-lg text-sm whitespace-pre-wrap ${
+                  message.role === "assistant"
+                    ? "bg-blue-100 text-slate-900 self-start shadow-sm"
+                    : "bg-blue-600 text-white self-end shadow-md"
+                }`}
+              >
+                {message.content}
+              </div>
+            ))}
+        </div>
+      )}
 
-        <div className="flex flex-row">
-          <button className={`my-2 ${isListening ? "bg-amber-200" : isSpeaking ? "bg-green-200" : "bg-slate-200"} p-3 text-center w-full `} onClick={handleListenButton}>{isListening ? "Listening . . ." : isSpeaking ? "Click to stop speaking" : "Click to start Listening"}</button>
-        </div>     
+    
+      <div className="mt-4">
+        <button
+          onClick={handleListenButton}
+          className={`w-full text-center py-3 font-semibold rounded-md transition-all duration-200 shadow-md ${
+            isListening
+              ? "bg-yellow-300 text-yellow-900"
+              : isSpeaking
+              ? "bg-blue-400 text-blue-900"
+              : "bg-blue-300 text-blue-900 hover:bg-blue-400"
+          }`}
+        >
+          {isListening
+            ? "Listening..."
+            : isSpeaking
+            ? "Speaking... Click to stop"
+            : "🎙️ Click to Start Listening"}
+        </button>
       </div>
-
-
     </div>
+  </div>
+);
 
 
-  )
 }
 
 export default Chat

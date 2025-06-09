@@ -1,22 +1,38 @@
 import { useNavigate } from "react-router-dom"
 
 
-
 const Home = () => {
-
   const navigate = useNavigate();
+
   return (
-    <div className="bg-[#e2e4e7] flex">
-      <div className="w-[40%] flex flex-col justify-center items-center h-screen">
-        <span className="text-4xl font-sans tracking-wide pb-2" style={{fontFamily:"fantasy"}}>Welcome To OPD MediAssist</span>
-        <span className="text-lg pb-5 ">Automatically Book Appointments with Chatbot.</span>
-        <span className="text-xl my-5 p-2 px-4 bg-[#d4d4da] rounded-md hover:cursor-pointer hover:bg-[#d1d2d6]" onClick={()=>{navigate("/voice")}}>Lets start</span>
+    <div className="bg-[#f1f5f9] flex flex-col md:flex-row min-h-screen">
+  
+      <div className="w-full md:w-[40%] flex flex-col justify-center items-center text-center px-6">
+        <h1 className="text-4xl font-semibold text-gray-800 mb-4" style={{ fontFamily: "Georgia, serif" }}>
+          Welcome to <span className="text-[#4b5563]">OPD MediAssist</span>
+        </h1>
+        <p className="text-lg text-gray-600 mb-6">
+          Automatically book appointments with our intelligent chatbot.
+        </p>
+        <button
+          onClick={() => navigate("/voice")}
+          className="text-base bg-[#34d399] hover:bg-[#10b981] text-white font-medium px-6 py-3 rounded-lg transition duration-300"
+        >
+          Let’s Start
+        </button>
+
       </div>
-      <div>
-        <img src="doctor.jpg" alt="" className="h-screen ml-auto"/>
+
+      
+      <div className="w-full md:w-[60%]">
+        <img
+          src="doctor.jpg"
+          alt="Doctor"
+          className="h-screen w-full object-cover"
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Home

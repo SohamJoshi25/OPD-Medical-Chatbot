@@ -38,29 +38,65 @@ const Chat = () => {
     }
   }
 
-  return (
-    <div className="mx-20 font-mono">
-      <span className="flex justify-left mt-10 text-5xl " style={{fontFamily:"fantasy"}}>OPD MediAssist</span>
-      <div className="pt-4 flex flex-col justify-around h-[87vh]">
+return (
+  <div className="h-screen flex flex-col font-mono mx-4 md:mx-20 my-6">
+  
+    <span
+      className="text-5xl text-emerald-800 font-semibold mb-6"
+      style={{ fontFamily: "fantasy" }}
+    >
+      OPD MediAssist
+    </span>
 
-        {messages && messages.filter((o) => o.role !== "system").length !== 0 && <div className="mb-3 overflow-y-scroll h-full hide-scrollbar ">
-          {messages.filter((o) => o.role !== "system").map((message, idx) => {
-            return <div key={idx} className="my-3 p-2 px-5 w-full bg-slate-100 rounded-sm">
-              <div className={`${message.role === "assistant" ? "text-left" : "text-right"}`}>{message.content}</div>
-            </div>
-          })}
-        </div>}
-
-        <div className="flex">
-          <input type="text" className="bg-slate-100 px-3 outline-0 rounded-sm h-18 w-full" placeholder="Start typing" value={inputText} onChange={handleUserText} onKeyDown={handleUserEnter}/>
-        </div>     
+  
+    <div className="flex flex-col flex-grow bg-white rounded-lg shadow-lg border border-gray-300 overflow-hidden">
+  
+      <div className="flex-grow overflow-y-auto p-6 space-y-4 hide-scrollbar bg-emerald-50">
+        {messages &&
+          messages.filter((o) => o.role !== "system").length !== 0 && (
+            <>
+              {messages
+                .filter((o) => o.role !== "system")
+                .map((message, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex ${
+                      message.role === "assistant"
+                        ? "justify-start"
+                        : "justify-end"
+                    }`}
+                  >
+                    <div
+                      className={`max-w-[70%] rounded-xl p-4 whitespace-pre-wrap text-sm ${
+                        message.role === "assistant"
+                          ? "bg-emerald-200 text-emerald-900"
+                          : "bg-emerald-600 text-white"
+                      } shadow-md`}
+                    >
+                      {message.content}
+                    </div>
+                  </div>
+                ))}
+            </>
+          )}
       </div>
 
-
+    
+      <div className="p-4 border-t border-gray-300 bg-white">
+        <input
+          type="text"
+          placeholder="Start typing"
+          value={inputText}
+          onChange={handleUserText}
+          onKeyDown={handleUserEnter}
+          className="w-full rounded-md px-4 py-3 border border-gray-300 bg-emerald-50 text-emerald-900 placeholder:italic placeholder:text-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+        />
+      </div>
     </div>
+  </div>
+);
 
 
-  )
 }
 
 export default Chat
