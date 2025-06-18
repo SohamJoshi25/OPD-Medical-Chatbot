@@ -25,13 +25,13 @@ OPD Medical Chatbot is an AI-powered assistant designed to collect patient medic
 
 <br>
 <br>
-<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/Home.png" alt="Home Page" width="500">
+<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/Home.png" alt="Home Page" width="1000">
 <br>
 <br>
-<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/fullchat.png" alt="Farmer Market Prices" width="500">
+<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/fullchat.png" alt="Farmer Market Prices" width="1000">
 <br>
 <br>
-<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/result.png" alt="Farmer Market Prices" width="500">
+<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/result.png" alt="Farmer Market Prices" width="1000">
 <br>
 <br>
 <img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/casepaper.png" alt="Farmer Market Prices" width="500">
