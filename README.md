@@ -25,43 +25,47 @@ OPD Medical Chatbot is an AI-powered assistant designed to collect patient medic
 
 <br>
 <br>
-<img src="https://raw.githubusercontent.com/SohamJoshi25/FarmersMarket-WebScraper/refs/heads/main/public/image.png" alt="Farmer market Portal" width="500">
+<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/Home.png" alt="Home Page" width="500">
 <br>
 <br>
-<img src="https://raw.githubusercontent.com/SohamJoshi25/FarmersMarket-WebScraper/refs/heads/main/public/market1.png" alt="Farmer Market Prices" width="500">
+<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/fullchat.png" alt="Farmer Market Prices" width="500">
 <br>
 <br>
-<img src="https://raw.githubusercontent.com/SohamJoshi25/FarmersMarket-WebScraper/refs/heads/main/public/market2.png" alt="Postman" width="500">
+<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/result.png" alt="Farmer Market Prices" width="500">
 <br>
 <br>
+<img src="https://raw.githubusercontent.com/SohamJoshi25/OPD-Medical-Chatbot/refs/heads/main/public/images/casepaper.png" alt="Farmer Market Prices" width="500">
 
 ---
 
-## Project Structure
+<pre lang="markdown"> 
+### 📁 Project Structure 
 
-OPD-Medical-Chatbot/
-├── .eslintrc.cjs
-├── .gitignore
-├── index.html
-├── package.json
-├── README.md
-├───public
-│   └───images
-└───src
-    ├───contexts
-    ├───data
-    ├───hooks
-    │   └───speech
-    ├───pages
-    │   ├───chatbot
-    │   ├───chatbot-chat
-    │   │   └───utils
-    │   ├───home
-    │   ├───not-found
-    │   └───response
-    ├───types
-    └───utils
 
+OPD-Medical-Chatbot 
+├── .eslintrc.cjs 
+├── .gitignore 
+├── index.html 
+├── package.json 
+├── README.md 
+├── public/ 
+│   └── images/ 
+└── src/ 
+    ├── contexts/ 
+    │    ├── data/ 
+    │        ├── hooks/ 
+    │            └── speech/ 
+    │                
+    ├── pages/ 
+    │    ├── chatbot/ 
+    │    ├── chatbot-chat/ 
+    │    │   └── utils/ 
+    │    ├── home/ 
+    │    ├── not-found/ 
+    │    └── response/ 
+    ├── types/ 
+    └── utils/ 
+ </pre>
 
 ---
 
