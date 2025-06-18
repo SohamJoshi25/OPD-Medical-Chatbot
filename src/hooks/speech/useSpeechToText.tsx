@@ -45,7 +45,7 @@ const useSpeechToText = (setUserText : React.Dispatch<React.SetStateAction<strin
     }
   };
 
-  return { startListening, stopListening, isListening };
+  return { startListening, stopListening, isListening ,setIsListening};
 };
 
 export default useSpeechToText;

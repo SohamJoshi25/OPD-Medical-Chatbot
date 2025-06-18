@@ -1,101 +1,76 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import { GROQ_API_KEY } from '../../data/constants';
 
-function chunkSentence(input: string): string[] {
-  const words = input.split(" ");
-  const result: string[] = [];
-  let chunk: string[] = [];
-
-  for (const word of words) {
-    chunk.push(word);
-
-    if (chunk.join(" ").length >= 120) { // Split based on character length
-      result.push(chunk.join(" "));
-      chunk = [];
-    }
-  }
-
-  if (chunk.length) {
-    result.push(chunk.join(" "));
-  }
-
-  return result;
-}
 
 const useTextToSpeech = () => {
-  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Cleanup on unmount
   useEffect(() => {
-    const loadVoices = () => {
-      const availableVoices = window.speechSynthesis.getVoices();
-      setVoices(availableVoices);
-    };
-
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-    loadVoices();
-
     return () => {
-      window.speechSynthesis.onvoiceschanged = null;
+      if (audioRef.current) {
+        audioRef.current.pause();
+        URL.revokeObjectURL(audioRef.current.src);
+        audioRef.current = null;
+      }
     };
   }, []);
 
-  const speak = (text: string) => {
-    if (!window.speechSynthesis) {
-      alert('Text-to-Speech is not supported in this browser');
-      return;
+  const stopSpeaking = () => {
+    const audio = audioRef.current;
+
+
+    if (audio) {
+      audio.currentTime = 0;
+      audio.pause();
+      audioRef.current = null;
+      setIsSpeaking(false);
     }
+  };
 
-    if (isSpeaking) {
-      stopSpeaking();
-      return;
-    }
+  const speak = async (text: string) => {
+    stopSpeaking(); // stop any current speech
 
-    const availableVoices = window.speechSynthesis.getVoices();
-    const selectedVoice = availableVoices[7];
-
-    const sentences = chunkSentence(text);
-    if (sentences.length === 0) return;
-
-    let currentIndex = 0;
-    setIsSpeaking(true);
-
-    const speakNext = () => {
-      if (currentIndex >= sentences.length) {
-        setIsSpeaking(false);
-        return;
+    const response = await axios.post(
+      "https://api.groq.com/openai/v1/audio/speech",
+      {
+        model: "playai-tts",
+        input: text,
+        voice: "Arista-PlayAI",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${GROQ_API_KEY}`,
+        },
+        responseType: "arraybuffer",
       }
+    );
 
-      const utterance = new SpeechSynthesisUtterance(sentences[currentIndex]);
-      utterance.lang = "en-US";
-      utterance.pitch = 1.0;
-      utterance.rate = 1.0;
+    const blob = new Blob([response.data], { type: "audio/wav" });
+    const audioUrl = URL.createObjectURL(blob);
+    audioRef.current = new Audio(audioUrl);
 
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-      }
-
-      utterance.onend = () => {
-        currentIndex++;
-        setTimeout(speakNext, 300); // Add small pause between sentences
-      };
-
-      utterance.onerror = () => {
-        console.error("Speech error");
-        setIsSpeaking(false);
-      };
-
-      window.speechSynthesis.speak(utterance);
+    audioRef.current.onended = () => {
+      URL.revokeObjectURL(audioUrl);
+      audioRef.current = null;
+      setIsSpeaking(false);
     };
 
-    speakNext();
+    // Optional safety: handle failure to buffer
+    audioRef.current.addEventListener("error", () => {
+      console.error("Failed to load audio");
+      setIsSpeaking(false);
+      audioRef.current = null;
+    });
+
+    audioRef.current.play();
+    setIsSpeaking(true)
   };
 
-  const stopSpeaking = () => {
-    window.speechSynthesis.cancel();
-    setIsSpeaking(false);
-  };
-
-  return { speak, stopSpeaking, isSpeaking, voices };
+  return { speak, stopSpeaking, isSpeaking };
 };
 
 export default useTextToSpeech;

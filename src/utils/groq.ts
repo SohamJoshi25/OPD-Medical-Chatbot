@@ -2,7 +2,7 @@ import axios from "axios"
 import { Message } from "../types/MessageTypes"
 import { GROQ_API_KEY } from "../data/constants";
 
-export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) : Promise<[string,boolean]>  => {
+export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) : Promise<[string,boolean,boolean]>  => {
     try {
 
         const body = {
@@ -42,12 +42,14 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
         assistant_response = assistant_response.replace("<|eot_id|>",".")
         assistant_response = assistant_response.replace("?","?.")
        
-        
+        if(assistant_response.trim().toLowerCase().includes("goodbye") || assistant_response.trim().toLowerCase().includes("good bye") || assistant_response.trim().toLowerCase().includes("good-bye") ){
+            return ["",false,true];
+        }
         if(assistant_response.trim().startsWith("JSON")){
             const json_string = assistant_response.split("JSON")[1].trim();
             const details = JSON.parse(json_string);
             details.id = Math.floor(Math.random()*10000000);
-            return [JSON.stringify(details),true]
+            return [JSON.stringify(details),true,false]
         }else{
             setMessages((p) => {
                 return [...p.slice(0, -1), {
@@ -55,14 +57,14 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
                     content:assistant_response
                 }];
               });
-            return [assistant_response,false];
+            return [assistant_response,false,false];
         }
 
           
         //pass
     } catch (error : unknown) {
         console.error(error)
-        return ["",false];
+        return ["",false,true];
     }
 }
 
