@@ -8,8 +8,8 @@ const Home = () => {
     <div className="bg-[#f1f5f9] flex flex-col md:flex-row min-h-screen">
   
       <div className="w-full md:w-[40%] flex flex-col justify-center items-center text-center px-6">
-        <h1 className="text-4xl font-semibold text-gray-800 mb-4" style={{ fontFamily: "Georgia, serif" }}>
-          Welcome to <span className="text-[#4b5563]">OPD MediAssist</span>
+        <h1 className="text-4xl font-semibold text-[#1e232c] mb-4" style={{ fontFamily: "Georgia, serif" }}>
+          Welcome to <span className="text-[#212730]">OPD MediAssist</span>
         </h1>
         <p className="text-lg text-gray-600 mb-6">
           Automatically book appointments with our intelligent chatbot.

@@ -36,10 +36,12 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
             "stream": false,
             "frequency_penalty": 2,
             "presence_penalty": 0.2,
-            "model": "llama-3.3-70b-versatile"
+            "model": "qwen-qwq-32b"
         }
         //"llama-3.2-3b-preview"
-
+        //deepseek-r1-distill-llama-70b
+        //llama-3.3-70b-versatile
+        //qwen-qwq-32b
 
 
         const response = await axios.post("https://api.groq.com/openai/v1/chat/completions",
@@ -56,6 +58,9 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
         let assistant_response = response.data.choices[0].message.content as string;
         assistant_response = assistant_response.replace("<|eot_id|>",".")
         assistant_response = assistant_response.replace("?","?.")
+        let temp = assistant_response.split("</think>");
+        assistant_response = temp.length>1 ?  temp.pop()?.trim() as string : temp[0];
+        assistant_response = assistant_response.replace("\n\n","")
        
         if(assistant_response.trim().toLowerCase().includes("goodbye") || assistant_response.trim().toLowerCase().includes("good bye") || assistant_response.trim().toLowerCase().includes("good-bye") ){
             return ["",false,true];
