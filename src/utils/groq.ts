@@ -1,7 +1,7 @@
 import axios from "axios"
 import { Message } from "../types/MessageTypes"
 import { GROQ_API_KEY , BACKEND_URL} from "../data/constants";
-export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string) : Promise<[string,boolean,boolean]>  => {
+export const groq_competition_input = async (messages:Message[], setMessages: React.Dispatch<React.SetStateAction<Message[]>>, userPrompt: string, rag:boolean = false) : Promise<[string,boolean,boolean]>  => {
     try {
 
         setMessages(p => [...p ,{
@@ -11,19 +11,24 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
                 role:"assistant",
                 content:"Thinking . . ."
             }])
+        let context = ""
 
-        let text = messages
-            .filter(message => message.role === "user")
-            .map(message => message.content)
-            .join(" ");
+        if(rag){
+            let text = messages
+                .filter(message => message.role === "user")
+                .map(message => message.content)
+                .join(" ");
 
-        const ragContext = await axios.post(BACKEND_URL+"/v1/rag",{
-            "text":text ? text : "",
-            "top_k":5,
-            "min_score":0.3
-        });
+            const ragContext = await axios.post(BACKEND_URL+"/v1/rag",{
+                "text":text ? text : "",
+                "top_k":5,
+                "min_score":0.3
+            });
 
-        let context = ragContext.data.contexts.length > 0 ? "#START_CONTEXT\n"+JSON.stringify(ragContext.data.contexts)+"\n#END_CONTE0XT\n" : "";
+            
+            context = ragContext.data.contexts.length > 0 ? "#START_CONTEXT\n"+JSON.stringify(ragContext.data.contexts)+"\n#END_CONTE0XT\n" : "";
+
+        }
 
 
         const body = {
@@ -36,12 +41,13 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
             "stream": false,
             "frequency_penalty": 2,
             "presence_penalty": 0.2,
-            "model": "qwen-qwq-32b"
+            "model": "llama-3.3-70b-versatile"
         }
-        //"llama-3.2-3b-preview"
+        //llama-3.1-8b-instant
         //deepseek-r1-distill-llama-70b
         //llama-3.3-70b-versatile
         //qwen-qwq-32b
+        //mistral-saba-24b
 
 
         const response = await axios.post("https://api.groq.com/openai/v1/chat/completions",
@@ -62,7 +68,7 @@ export const groq_competition_input = async (messages:Message[], setMessages: Re
         assistant_response = temp.length>1 ?  temp.pop()?.trim() as string : temp[0];
         assistant_response = assistant_response.replace("\n\n","")
        
-        if(assistant_response.trim().toLowerCase().includes("goodbye") || assistant_response.trim().toLowerCase().includes("good bye") || assistant_response.trim().toLowerCase().includes("good-bye") ){
+        if(assistant_response.trim().toLowerCase().includes("goodbye") || assistant_response.trim().toLowerCase().includes("good bye") || assistant_response.trim().toLowerCase().includes("good-bye")){
             return ["",false,true];
         }
         if(assistant_response.trim().startsWith("JSON") || assistant_response.trim().toLowerCase().includes("json")){

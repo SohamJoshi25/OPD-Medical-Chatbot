@@ -109,7 +109,7 @@ const Chat = () => {
   }
 
   const groq_comp_call = async () => {
-    const [message,isEnd,isError] = await groq_competition_input(messages,setMessages,inputText);
+    const [message,isEnd,isError] = await groq_competition_input(messages,setMessages,inputText,true);
     if(isError){
       setResponse("");
       navigate("/");
