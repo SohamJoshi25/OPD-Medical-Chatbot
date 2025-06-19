@@ -69,14 +69,6 @@ OPD-Medical-Chatbot
 
 ---
 
-## Future Work
-
-- **RAG Integration:** Implement Retrieval-Augmented Generation for more accurate and context-aware responses.
-- **Backend Integration:** Connect with hospital management systems for seamless data flow.
-- **Enhanced Patient Guidance:** Add more advanced symptom checkers and triage logic.
-
----
-
 ## Disclaimer
 
 This chatbot is intended to assist with patient intake and provide general health information. It does not replace professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for medical concerns.
